@@ -7,6 +7,7 @@ import controller.validation.ValidationController
 import controller.validation.validationModule
 import instrumentation.ValidationInstrumentation
 import instrumentation.ValidationInstrumentation.compareValidationResponses
+import instrumentation.ValidationInstrumentation.givenAJsonValidationRequest
 import instrumentation.ValidationInstrumentation.givenAValidationRequest
 import instrumentation.ValidationInstrumentation.givenAValidationRequestWithABadFileName
 import instrumentation.ValidationInstrumentation.givenAValidationRequestWithABadFileType
@@ -21,6 +22,7 @@ import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import model.ValidationRequest
 import model.ValidationResponse
 import org.junit.jupiter.api.*
 import org.koin.dsl.module
@@ -59,6 +61,24 @@ class ValidationRoutingTest : BaseRoutingTest() {
         val call = handleRequest(HttpMethod.Post, VALIDATION_ENDPOINT) {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(toJsonBody(validationRequest))
+        }
+
+        with(call) {
+            assertEquals(HttpStatusCode.OK, response.status())
+            val responseBody = response.parseBody(ValidationResponse::class.java)
+            compareValidationResponses(validationResponse, responseBody)
+        }
+    }
+
+    @Test
+    fun `when requesting validation with valid JSON, return validation response body`() = withBaseTestApplication {
+        val validationRequest = givenAJsonValidationRequest()
+        val validationResponse = givenAValidationResult(10, 10)
+        coEvery { validationController.validateRequest(ofType(ValidationRequest::class)) } returns validationResponse
+
+        val call = handleRequest(HttpMethod.Post, VALIDATION_ENDPOINT) {
+            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            setBody(validationRequest)
         }
 
         with(call) {

@@ -25,6 +25,22 @@ object ValidationInstrumentation {
         return ValidationRequest().setCliContext(CliContext()).setFilesToValidate(listOfFiles).setSessionId("DUMMY_SESSION_ID")
     }
 
+    fun givenAJsonValidationRequest(): String {
+        return "{\n" +
+                "    \"cliContext\": {\n" +
+                "        \"targetVer\": \"4.0.1\",\n" +
+                "        \"sv\": \"4.0.1\"\n" +
+                "    },\n" +
+                "    \"filesToValidate\": [\n" +
+                "        {\n" +
+                "            \"fileName\": \"manually_entered_file.json\",\n" +
+                "            \"fileContent\": \"{\\n\\t\\\"resourceType\\\":\\\"RiskAssessment\\\",\\n\\t\\\"status\\\":\\\"final\\\",\\n\\t\\\"subject\\\":{\\n\\t\\t\\\"reference\\\":\\\"Patient/1625\\\"\\n\\t},\\n\\t\\\"prediction\\\":[\\n\\t\\t{\\n\\t\\t\\t\\\"probabilityDecimal\\\":101.0\\n\\t\\t}\\n\\t]\\n}\",\n" +
+                "            \"fileType\": \"json\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+    }
+
     fun givenAValidationRequestWithNoFiles(): ValidationRequest {
         val listOfFiles = mutableListOf<FileInfo>()
         return ValidationRequest().setCliContext(CliContext()).setFilesToValidate(listOfFiles).setSessionId("DUMMY_SESSION_ID")
