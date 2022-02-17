@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("multiplatform") version "1.4.32"
-    kotlin("plugin.serialization") version "1.4.32"
+    kotlin("multiplatform") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
 
     id("org.hidetake.ssh") version "2.10.1"
     id("org.openjfx.javafxplugin") version "0.0.8"
@@ -34,7 +34,7 @@ kotlin {
     jvm {
         compilations {
             all {
-                kotlinOptions.jvmTarget = "1.8"
+                kotlinOptions.jvmTarget = "11"
             }
         }
         withJava()
@@ -132,11 +132,11 @@ kotlin {
                 implementation("io.ktor:ktor-client-json-js:${property("ktorVersion")}")
                 implementation("io.ktor:ktor-client-serialization-js:${property("ktorVersion")}")
 
-                implementation("org.jetbrains:kotlin-react:${property("kotlinReactVersion")}")
-                implementation("org.jetbrains:kotlin-react-dom:${property("kotlinReactVersion")}")
-                implementation("org.jetbrains:kotlin-react-router-dom:${property("kotlinReactRouterVersion")}")
-                implementation("org.jetbrains:kotlin-styled:${property("kotlinStyledVersion")}")
-                implementation("org.jetbrains:kotlin-react-redux:${property("kotlinReactReduxVersion")}")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:${property("kotlinReactVersion")}")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:${property("kotlinReactVersion")}")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:${property("kotlinReactRouterVersion")}")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:${property("kotlinStyledVersion")}")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-redux:${property("kotlinReactReduxVersion")}")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-html-js:${property("kotlinxVersion")}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${property("kotlinxCoroutinesVersion")}")
@@ -212,7 +212,7 @@ tasks.getByName<Jar>("jvmJar") {
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "11"
         }
     }
 }
