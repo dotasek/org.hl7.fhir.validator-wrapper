@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import de.undercouch.gradle.tasks.download.Download 
 
 plugins {
     kotlin("multiplatform") version "1.4.32"
@@ -7,9 +8,13 @@ plugins {
     id("org.hidetake.ssh") version "2.10.1"
     id("org.openjfx.javafxplugin") version "0.0.8"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
+    id("de.undercouch.download") version "5.0.1"
+
     application
 }
 group = "org.hl7.fhir"
+
+
 
 repositories {
     google()
@@ -177,6 +182,20 @@ task("printVersion") {
         println(project.version)
     }
 }
+
+tasks.register<Download>("downloadFiles") {
+    src(listOf(
+        "https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.4.14/src-noconflict/mode-json.js",
+        "https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.4.14/src-noconflict/theme-github.js",
+        "https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.4.14/src-noconflict/worker-base.js",
+        "https://raw.githubusercontent.com/ajaxorg/ace-builds/v1.4.14/src-noconflict/worker-json.js"
+    ))
+    dest("src/commonMain/resources")
+    overwrite(true)
+}
+
+defaultTasks("downloadFiles")
+
 
 tasks.withType<Jar> {
     manifest {
